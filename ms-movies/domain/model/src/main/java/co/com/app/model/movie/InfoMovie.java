@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -15,11 +16,13 @@ import java.util.List;
 @Builder()
 public class InfoMovie {
 
-    private Integer id;
+    private Integer page;
 
-    private List<Movie> results;
+    private List<Movie> movies;
 
     private Integer totalPages;
 
-    private Integer totalResults;
+    private Integer totalMovies;
+
+    private Integer total;
 }

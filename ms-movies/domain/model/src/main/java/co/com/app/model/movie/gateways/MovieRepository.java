@@ -5,5 +5,6 @@ import reactor.core.publisher.Mono;
 
 public interface MovieRepository {
 
-    Mono<InfoMovie> getMovies(int page, int pageSize);
+    // pageable 1, 5, 10, 20
+    Mono<InfoMovie> getMovies(double page, double pageSize);
 }

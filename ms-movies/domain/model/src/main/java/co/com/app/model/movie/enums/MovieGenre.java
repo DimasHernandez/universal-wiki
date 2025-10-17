@@ -29,7 +29,7 @@ public enum MovieGenre {
     WESTERN(37, "Western");
 
     private final int id;
-    private final String displayName;
+    private final String genre;
 
     public static MovieGenre fromId(int id) {
         return Stream.of(MovieGenre.values())
@@ -39,7 +39,7 @@ public enum MovieGenre {
 
     @Override
     public String toString() {
-        return displayName;
+        return genre;
     }
 }
 
