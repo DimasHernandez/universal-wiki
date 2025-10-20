@@ -3,6 +3,7 @@ package co.com.app.consumer.movie;
 import co.com.app.consumer.movie.dto.InfoMovieResponse;
 import co.com.app.consumer.movie.mapper.MovieMapper;
 import co.com.app.consumer.movie.utils.Utilities;
+import co.com.app.model.ex.MovieApiResponseException;
 import co.com.app.model.movie.InfoMovie;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -134,7 +135,7 @@ class MovieRestConsumerTest {
 
         // Assert
         StepVerifier.create(response)
-                .expectErrorMatches(err -> err instanceof RuntimeException)
+                .expectErrorMatches(err -> err instanceof MovieApiResponseException)
                 .verify();
     }
 

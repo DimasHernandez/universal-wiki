@@ -3,6 +3,7 @@ package co.com.app.consumer.movie;
 import co.com.app.consumer.movie.dto.InfoMovieResponse;
 import co.com.app.consumer.movie.errorclient.ErrorClientMovie;
 import co.com.app.consumer.movie.mapper.MovieMapper;
+import co.com.app.model.ex.MovieApiResponseException;
 import co.com.app.model.movie.InfoMovie;
 import co.com.app.model.movie.Movie;
 import co.com.app.model.movie.gateways.MovieRepository;
@@ -70,10 +71,9 @@ public class MovieRestConsumer implements MovieRepository {
                 .onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals,
                         clientResponse -> clientResponse.bodyToMono(ErrorClientMovie.class)
                                 .flatMap(errorClientMovie ->
-                                        Mono.error(new RuntimeException(errorClientMovie.status_message()))))
+                                        Mono.error(new MovieApiResponseException(errorClientMovie.status_message()))))
                 .bodyToMono(InfoMovieResponse.class)
                 .map(movieMapper::toEntity)
-                .doOnNext(infoMovie -> log.info("InfoMovie {}", infoMovie))
                 .map(infoMovie -> getInfoMovie(page, pageSize, infoMovie, pageApi))
                 .doOnSuccess(infoMovie -> log.info("Info Movie consumed successfully {}", infoMovie.toString()));
     }
@@ -87,8 +87,8 @@ public class MovieRestConsumer implements MovieRepository {
 
     // Resilience
     public Mono<InfoMovie> moviesFallback(double code, double value, Exception ex) {
-        log.info("Fallback movie code {}, value {}", code, value);
-        log.error("Fallback Movies {}", ex.getMessage());
+        log.warn("Executing fallback for movie service. Code {}, Value {}", code, value);
+        log.error("Movie service fallback triggered due exception {}", ex.getMessage());
         return Mono.just(InfoMovie.builder()
                 .page(0)
                 .movies(Collections.emptyList())
