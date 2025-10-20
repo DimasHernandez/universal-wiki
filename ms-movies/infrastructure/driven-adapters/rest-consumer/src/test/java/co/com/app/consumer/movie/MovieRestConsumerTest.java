@@ -91,22 +91,51 @@ class MovieRestConsumerTest {
     @Test
     void shouldGetFieldEmptyWhenPageIsGreaterThanTwenty() throws JsonProcessingException {
         // Arrange
-        double page = 30;
-        double pageSize = 5;
+        double page = 1;
+        double pageSize = 2001;
         InfoMovie infoMovieError = Utilities.infoMovieErrorMock();
         String body = mapper.writeValueAsString(infoMovieError);
+
+        when(movieMapper.toEntity(any(InfoMovieResponse.class))).thenReturn(infoMovieError);
 
         // Act
         mockBackEnd.enqueue(new MockResponse()
                 .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
                 .setResponseCode(HttpStatus.OK.value())
                 .setBody(body));
+        var response = movieRestConsumer.getMovies(page, pageSize)
+                .doOnNext(infoResponse -> System.out.println("Info Movie Response: " + infoResponse));
+
+        // Assert
+        StepVerifier.create(response)
+                .expectErrorMatches(err -> err instanceof IllegalArgumentException
+                        && err.getMessage().equalsIgnoreCase("-2000"))
+                .verify();
+    }
+
+    @Test
+    void shouldGetErrorExceptionServiceUnavailable() {
+        // Arrange
+        double page = 1;
+        double pageSize = 2001;
+        String body = """
+                {
+                "code": "12-SIE",
+                "error": "unavailable"
+                }
+                """;
+
+        // Act
+        mockBackEnd.enqueue(new MockResponse()
+                .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .setResponseCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .setBody(body));
         var response = movieRestConsumer.getMovies(page, pageSize);
 
         // Assert
         StepVerifier.create(response)
-                .expectNextMatches(infoMovie -> infoMovie.getPage() == 0 && infoMovie.getMovies().isEmpty()
-                        && infoMovie.getTotalPages() == 0 && infoMovie.getTotalMovies() == 0);
+                .expectErrorMatches(err -> err instanceof RuntimeException)
+                .verify();
     }
 
 }

@@ -72,10 +72,10 @@ public class MovieRestConsumer implements MovieRepository {
                                 .flatMap(errorClientMovie ->
                                         Mono.error(new RuntimeException(errorClientMovie.status_message()))))
                 .bodyToMono(InfoMovieResponse.class)
-                .doOnNext(infoMovieResponse -> log.info("InfoMovieResponse: {}", infoMovieResponse.toString()))
                 .map(movieMapper::toEntity)
                 .doOnNext(infoMovie -> log.info("InfoMovie {}", infoMovie))
-                .map(infoMovie -> getInfoMovie(page, pageSize, infoMovie, pageApi));
+                .map(infoMovie -> getInfoMovie(page, pageSize, infoMovie, pageApi))
+                .doOnSuccess(infoMovie -> log.info("Info Movie consumed successfully {}", infoMovie.toString()));
     }
 
     private int calculationPage(double page, double pageSize, MultiValueMap<String, String> queryParams) {
