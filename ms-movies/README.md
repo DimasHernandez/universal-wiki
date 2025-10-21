@@ -46,5 +46,5 @@ Este módulo es el más externo de la arquitectura, es el encargado de ensamblar
 
 **Los beans de los casos de uso se disponibilizan automaticamente gracias a un '@ComponentScan' ubicado en esta capa.**
 
-# Diagrama Arquitectuta Micro-Servicios
+# Diagrama Arquitectura Micro-Servicios
 ![img.png](img.png)
