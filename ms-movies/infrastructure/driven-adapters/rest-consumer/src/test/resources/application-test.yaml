@@ -1,0 +1,2 @@
+app:
+  appikey: ${API_KEY_MOVIES_TEST:TEST}
