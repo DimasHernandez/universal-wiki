@@ -1,10 +1,15 @@
 package co.com.bancolombia.config;
 
+import co.com.bancolombia.model.user.User;
+import co.com.bancolombia.model.user.gateways.UserRepository;
+import co.com.bancolombia.usecase.user.UserUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import reactor.core.publisher.Mono;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UseCasesConfigTest {
@@ -33,6 +38,32 @@ public class UseCasesConfigTest {
         @Bean
         public MyUseCase myUseCase() {
             return new MyUseCase();
+        }
+
+        @Bean
+        public UserUseCase userUseCase() {
+            return new UserUseCase(userRepository());
+        }
+
+        @Bean
+        public UserRepository userRepository() {
+            return new UserRepository() {
+
+                @Override
+                public Mono<User> saveUser(User user) {
+                    return Mono.empty();
+                }
+
+                @Override
+                public Mono<User> findByUsername(String username) {
+                    return Mono.empty();
+                }
+
+                @Override
+                public Mono<Boolean> existsByUsername(String username) {
+                    return Mono.empty();
+                }
+            };
         }
     }
 
