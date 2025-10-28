@@ -1,10 +1,15 @@
 package co.com.edge.config;
 
+import co.com.edge.model.validation.Validation;
+import co.com.edge.model.validation.gateways.ValidationRepository;
+import co.com.edge.usecase.validation.ValidationUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import reactor.core.publisher.Mono;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UseCasesConfigTest {
@@ -30,9 +35,21 @@ public class UseCasesConfigTest {
     @Import(UseCasesConfig.class)
     static class TestConfig {
 
+        private final ValidationRepository validationRepository = new ValidationRepository() {
+            @Override
+            public Mono<Boolean> validate(Validation validate) {
+                return Mono.empty();
+            }
+        };
+
         @Bean
         public MyUseCase myUseCase() {
             return new MyUseCase();
+        }
+
+        @Bean
+        public ValidationUseCase  validationUseCase() {
+            return new ValidationUseCase(validationRepository);
         }
     }
 
