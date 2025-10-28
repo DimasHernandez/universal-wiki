@@ -6,10 +6,18 @@
     "outDir": "./dist/out-tsc",
     "baseUrl": "./",
     "paths": {
-      "@core/*": ["src/app/core/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@app/*": ["src/app/*"],
-      "@environments/*": ["src/environments/*"],
+      "@core/*": [
+        "src/app/core/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@environments/*": [
+        "src/environments/*"
+      ],
     },
     "strict": true,
     "noImplicitOverride": true,
