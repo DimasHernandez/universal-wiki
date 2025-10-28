@@ -1,0 +1,71 @@
+server:
+  port: 8088
+spring:
+  webflux:
+    base-path: "/edge"
+  application:
+    name: "edge"
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+          - id: "auth-microservice"
+            uri: "http://localhost:8081"
+            predicates:
+            - "Path=/auth/api/v1/signup,/auth/api/v1/login"
+            - "Method=OPTIONS,POST"
+            filters:
+            - "StripPrefix=2"
+
+          - id: "movies-microservice"
+            uri: "http://localhost:8080"
+            predicates:
+              - "Path=/api/v1/movies"
+              - "Method=OPTIONS,GET"
+            filters:
+              - "StripPrefix=1"
+logging:
+  devtools:
+    add-properties: false
+  h2:
+    console:
+      enabled: true
+      path: "/"
+  profiles:
+    include: null
+  level:
+    org.springframework.cloud.gateway: "debug"
+    org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping: "debug"
+    org.springframework.cloud.gateway.handler.FilteringWebHandler: "debug"
+    org.springframework.web: "debug"
+adapter:
+  restconsumer:
+    timeout: 5000
+    url: ${URL_AUTH:http://localhost:8081/api/v1}
+#    url: ${URL_AUTH:http://localhost:8080}
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+resilience4j:
+  circuitbreaker:
+    instances:
+      testGet:
+        registerHealthIndicator: true
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: "2s"
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 10
+        waitDurationInOpenState: "10s"
+      testPost:
+        registerHealthIndicator: true
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: "2s"
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 10
+        waitDurationInOpenState: "10s"

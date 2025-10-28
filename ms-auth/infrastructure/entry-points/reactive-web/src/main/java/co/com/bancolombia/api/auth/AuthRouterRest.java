@@ -14,6 +14,7 @@ public class AuthRouterRest {
     @Bean
     public RouterFunction<ServerResponse> routerAuthFunction(AuthHandler authHandler) {
         return route(POST("/signup"), authHandler::signup)
-                .andRoute(POST("/login"), authHandler::login);
+                .andRoute(POST("/login"), authHandler::login)
+                .andRoute(POST("/validate"), authHandler::validateToken);
     }
 }

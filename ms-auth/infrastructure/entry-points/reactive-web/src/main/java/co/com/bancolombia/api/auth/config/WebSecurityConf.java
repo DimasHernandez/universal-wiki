@@ -1,7 +1,6 @@
 package co.com.bancolombia.api.auth.config;
 
 import co.com.bancolombia.api.auth.jwt.JWTAuthenticationManager;
-import co.com.bancolombia.model.user.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +23,22 @@ public class WebSecurityConf {
 
     private final SecurityContextRepository securityContextRepository;
 
+    private static Customizer<ServerHttpSecurity.AuthorizeExchangeSpec> getAuthorizeExchangeSpecCustomizer() {
+        return authorizeExchangeSpec ->
+                authorizeExchangeSpec
+                        .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/login", "/signup", "/validate").permitAll()//Improve raw endpoints using list strategy (List<String>)
+                        .anyExchange().authenticated();
+    }
+
+    private static Customizer<ServerHttpSecurity.ExceptionHandlingSpec> getExceptionHandlingSpecCustomizer() {
+        return exHandlingSpec ->
+                exHandlingSpec.authenticationEntryPoint((exchange, denied) ->
+                                Mono.fromRunnable(() -> exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED)))
+                        .accessDeniedHandler((exchange, denied) ->
+                                Mono.fromRunnable(() -> exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN)));
+    }
+
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
         return http
@@ -36,22 +51,5 @@ public class WebSecurityConf {
                 .securityContextRepository(securityContextRepository)
                 .authorizeExchange(getAuthorizeExchangeSpecCustomizer())
                 .build();
-    }
-
-    private static Customizer<ServerHttpSecurity.AuthorizeExchangeSpec> getAuthorizeExchangeSpecCustomizer() {
-        return authorizeExchangeSpec ->
-                authorizeExchangeSpec
-                        .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll() //TODO: Revisar la dependencia con el front. (El front funciona sin esta linea?   )
-                        .pathMatchers(HttpMethod.POST, "/login", "/signup").permitAll()// TODO: Mejorar pasar rutas desde el application en una List<String>
-                        .pathMatchers(HttpMethod.POST, "/add-permissions", "/remove-permissions").hasRole(Role.ROLE_ADMIN.getValue())
-                        .anyExchange().authenticated();
-    }
-
-    private static Customizer<ServerHttpSecurity.ExceptionHandlingSpec> getExceptionHandlingSpecCustomizer() {
-        return exHandlingSpec ->
-                exHandlingSpec.authenticationEntryPoint((exchange, denied) ->
-                                Mono.fromRunnable(() -> exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED)))
-                        .accessDeniedHandler((exchange, denied) ->
-                                Mono.fromRunnable(() -> exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN)));
     }
 }
