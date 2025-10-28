@@ -109,4 +109,13 @@ public class JWTUtil {
         final String extractedUsername = extractUsername(token);
         return (extractedUsername.equals(username) && !isTokenExpired(token));
     }
+
+    public Boolean validateToken(String token) {
+        try {
+            return !isTokenExpired(token);
+        } catch (Exception e) {
+            log.info("Invalid JWT Token {}", e.getMessage());
+            return false;
+        }
+    }
 }

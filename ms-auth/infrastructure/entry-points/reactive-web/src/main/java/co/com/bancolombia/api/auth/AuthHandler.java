@@ -5,6 +5,8 @@ import co.com.bancolombia.api.auth.dto.LoginRequest;
 import co.com.bancolombia.api.auth.dto.SignupResponse;
 import co.com.bancolombia.api.auth.dto.TokenResponse;
 import co.com.bancolombia.api.auth.dto.UserRequest;
+import co.com.bancolombia.api.auth.dto.ValidateTokenRequest;
+import co.com.bancolombia.api.auth.dto.ValidateTokenResponse;
 import co.com.bancolombia.api.auth.jwt.JWTUtil;
 import co.com.bancolombia.api.auth.jwt.PBKDF2Encoder;
 import co.com.bancolombia.api.auth.mapper.UserMapper;
@@ -51,6 +53,17 @@ public class AuthHandler {
                         .ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(tokenResponse));
+    }
+
+    public Mono<ServerResponse> validateToken(ServerRequest request) {
+        return request
+                .bodyToMono(ValidateTokenRequest.class)
+                .map(validateTokenRequest -> jwtUtil.validateToken(validateTokenRequest.token()))
+                .flatMap(isValid -> ServerResponse
+                        .ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(new ValidateTokenResponse(isValid))
+                );
     }
 
     private Mono<SignupResponse> processSignupRequest(UserRequest userRequest) {
