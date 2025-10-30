@@ -16,7 +16,15 @@ spring:
             - "Path=/auth/api/v1/signup,/auth/api/v1/login"
             - "Method=OPTIONS,POST"
             filters:
-            - "StripPrefix=2"
+            - StripPrefix=2
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+            metadata:
+              cors:
+                allowedOrigins: '*'
+                allowedMethods:
+                  - POST
+                  - OPTIONS
+                allowedHeaders: '${ALLOW_ORIGINS:*}'
 
           - id: "movies-microservice"
             uri: "http://localhost:8080"
