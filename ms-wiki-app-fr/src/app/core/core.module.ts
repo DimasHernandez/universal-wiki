@@ -6,6 +6,8 @@ import { CoreRoutingModule } from './core-routing.module';
 import { SecurityPageComponent } from './pages/security-page/security-page.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from './services/auth.service';
 
 
 @NgModule({
@@ -14,10 +16,12 @@ import { RegisterComponent } from './components/register/register.component';
     LoginComponent,
     RegisterComponent,
   ],
+  providers:[AuthService],
   imports: [
     CommonModule,
     CoreRoutingModule,
     ReactiveFormsModule,
+    HttpClientModule
   ]
 })
 export class CoreModule { }
