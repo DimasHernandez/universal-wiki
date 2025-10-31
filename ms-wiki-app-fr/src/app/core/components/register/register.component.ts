@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -16,6 +16,8 @@ import { AuthService } from '@core/services/auth.service';
   standalone: false,
 })
 export class RegisterComponent {
+  hide = signal(true);
+
   private readonly authService = inject(AuthService);
   fb = inject(FormBuilder);
 
@@ -32,14 +34,21 @@ export class RegisterComponent {
     roles: new FormControl(null, {
       validators: [Validators.required],
     }),
-    isActivate: new FormControl(true),
+    isActivate: new FormControl(true, ),
   });
 
   onSubmit(): void {
-    if (!this.registerForm.valid) {
+    console.log('Button yeah!');
+
+    if (!this.registerForm.valid || !this.registerForm.value.isActivate) {
+      console.log('form invalid');
+
       this.formDirty();
       return;
     }
+
+    console.log('form valid: ', this.registerForm.valid);
+    console.log('form valid: ', this.registerForm.value);
 
     const { username, password, roles, isActivate } = this.registerForm.value;
     if (username && password && roles && isActivate) {
@@ -51,17 +60,17 @@ export class RegisterComponent {
       };
       console.log('request :>> ', request);
 
-      this.authService.register(request).subscribe({
-        next: (value) => {
-          console.log('value :>> ', value);
-        },
-        error: (err) => {
-          console.log('err :>> ', err);
-        },
-        complete: () => {
-          console.log('completed');
-        },
-      });
+      // this.authService.register(request).subscribe({
+      //   next: (value) => {
+      //     console.log('value :>> ', value);
+      //   },
+      //   error: (err) => {
+      //     console.log('err :>> ', err);
+      //   },
+      //   complete: () => {
+      //     console.log('completed');
+      //   },
+      // });
       // ?? ||
     }
   }
@@ -69,13 +78,12 @@ export class RegisterComponent {
   formDirty(): void {
     const controlsKey = Object.keys(this.registerForm.controls);
     for (const key of controlsKey) {
-      this.registerForm.get(key)?.markAsDirty();
+      // this.registerForm.get(key)?.markAsDirty();
+      this.registerForm.get(key)?.markAsTouched();
     }
   }
 
   checkValidPassword(): string {
-    console.log('this.registerForm.value :>> ', this.registerForm.value);
-
     const { password, passwordConfirm } = this.registerForm.controls;
     if (passwordConfirm.pristine) {
       return '';
@@ -99,5 +107,10 @@ export class RegisterComponent {
       return 'is-valid';
     }
     return '';
+  }
+
+  clickEvent(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
   }
 }
