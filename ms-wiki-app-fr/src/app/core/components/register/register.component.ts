@@ -34,7 +34,9 @@ export class RegisterComponent {
     roles: new FormControl(null, {
       validators: [Validators.required],
     }),
-    isActivate: new FormControl(true, ),
+    isActivate: new FormControl(true, {
+      validators: [Validators.requiredTrue]
+    }),
   });
 
   onSubmit(): void {
@@ -60,17 +62,17 @@ export class RegisterComponent {
       };
       console.log('request :>> ', request);
 
-      // this.authService.register(request).subscribe({
-      //   next: (value) => {
-      //     console.log('value :>> ', value);
-      //   },
-      //   error: (err) => {
-      //     console.log('err :>> ', err);
-      //   },
-      //   complete: () => {
-      //     console.log('completed');
-      //   },
-      // });
+      this.authService.register(request).subscribe({
+        next: (value) => {
+          console.log('value :>> ', value);
+        },
+        error: (err) => {
+          console.log('err :>> ', err);
+        },
+        complete: () => {
+          console.log('completed');
+        },
+      });
       // ?? ||
     }
   }
@@ -83,17 +85,17 @@ export class RegisterComponent {
     }
   }
 
-  checkValidPassword(): string {
+  checkValidPassword(): boolean {
     const { password, passwordConfirm } = this.registerForm.controls;
     if (passwordConfirm.pristine) {
-      return '';
+      return true;
     }
 
     if (passwordConfirm.value && password.value === passwordConfirm.value) {
-      return 'is-valid';
+      return true;
     }
 
-    return 'is-invalid';
+    return false;
   }
 
   checkClassValid(field: string): string {
