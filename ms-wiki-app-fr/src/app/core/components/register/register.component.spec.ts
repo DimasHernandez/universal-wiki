@@ -7,6 +7,7 @@ import { IRegisterRequest } from '@core/interfaces/requests/register.request';
 import { AuthService } from '@core/services/auth.service';
 import { of, throwError } from 'rxjs';
 import { RegisterComponent } from './register.component';
+import { MaterialModule } from '@app/material/material.module';
 
 fdescribe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -16,7 +17,7 @@ fdescribe('RegisterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RegisterComponent],
-      imports: [ReactiveFormsModule, HttpClientModule],
+      imports: [ReactiveFormsModule, HttpClientModule, MaterialModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegisterComponent);
@@ -36,12 +37,12 @@ fdescribe('RegisterComponent', () => {
 
       component.formDirty();
 
-      expect(usernameControl.dirty).toBeTrue();
+      expect(usernameControl.touched).toBeTrue();
     });
   });
 
   describe('checkValidPassword', () => {
-    it('should be check password and should be return is-valid', () => {
+    it('should be check password and should be return true', () => {
       component.registerForm.setValue({
         username: 'pepe mal',
         password: 'pass3',
@@ -49,15 +50,14 @@ fdescribe('RegisterComponent', () => {
         roles: Roles.ROLE_USER,
         isActivate: true,
       });
-      const resultExpected = 'is-valid';
       component.registerForm.controls.passwordConfirm.markAsDirty();
 
       const result = component.checkValidPassword();
 
-      expect(result).toBe(resultExpected);
+      expect(result).toBeTrue();
     });
 
-    it('should be check password and should be return is-invalid', () => {
+    it('should be check password and should be return false', () => {
       component.registerForm.setValue({
         username: 'pepe mal',
         password: 'pass3',
@@ -65,46 +65,11 @@ fdescribe('RegisterComponent', () => {
         roles: Roles.ROLE_USER,
         isActivate: true,
       });
-      const resultExpected = 'is-invalid';
       component.registerForm.controls.passwordConfirm.markAsDirty();
 
       const result = component.checkValidPassword();
 
-      expect(result).toBe(resultExpected);
-    });
-  });
-
-  describe('checkClassValid', () => {
-    it('should be check class valid and should be return is-valid', () => {
-      component.registerForm.setValue({
-        username: 'pepe1',
-        password: 'pass3',
-        passwordConfirm: 'pass3',
-        roles: Roles.ROLE_USER,
-        isActivate: true,
-      });
-      const resultExpected = 'is-valid';
-      component.registerForm.controls.username.markAsDirty();
-
-      const result = component.checkClassValid('username');
-
-      expect(result).toBe(resultExpected);
-    });
-
-    it('should be check class valid and should be return is-invalid', () => {
-      component.registerForm.setValue({
-        username: 'pep',
-        password: 'pass3',
-        passwordConfirm: 'pass332',
-        roles: Roles.ROLE_USER,
-        isActivate: true,
-      });
-      const resultExpected = 'is-invalid';
-      component.registerForm.controls.username.markAsDirty();
-
-      const result = component.checkClassValid('username');
-
-      expect(result).toBe(resultExpected);
+      expect(result).toBeFalse();
     });
   });
 

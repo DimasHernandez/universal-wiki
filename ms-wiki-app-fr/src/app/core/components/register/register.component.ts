@@ -1,6 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
   FormControl,
   Validators,
@@ -40,8 +39,6 @@ export class RegisterComponent {
   });
 
   onSubmit(): void {
-    console.log('Button yeah!');
-
     if (!this.registerForm.valid || !this.registerForm.value.isActivate) {
       console.log('form invalid');
 
@@ -96,19 +93,6 @@ export class RegisterComponent {
     }
 
     return false;
-  }
-
-  checkClassValid(field: string): string {
-    const fieldControl = this.registerForm.get(field);
-
-    if (!fieldControl?.pristine && fieldControl?.errors) {
-      return 'is-invalid';
-    }
-
-    if (!fieldControl?.pristine) {
-      return 'is-valid';
-    }
-    return '';
   }
 
   clickEvent(event: MouseEvent) {
