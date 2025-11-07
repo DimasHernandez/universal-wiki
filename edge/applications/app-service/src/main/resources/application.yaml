@@ -13,7 +13,7 @@ spring:
           - id: "auth-microservice"
             uri: "http://localhost:8081"
             predicates:
-            - "Path=/auth/api/v1/signup,/auth/api/v1/login"
+            - "Path=/auth/api/v1/**"
             - "Method=OPTIONS,POST"
             filters:
             - StripPrefix=2
