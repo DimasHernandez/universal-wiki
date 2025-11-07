@@ -1,9 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { IRegisterRequest } from '@core/interfaces/requests/register.request';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 import { environment } from '@environments/environment';
 import { IErrorResponse } from '@core/interfaces/response/error.response';
+import { ILoginRequest } from '@core/interfaces/requests/login.request';
+import { ILoginResponse } from '@core/interfaces/response/login-response';
 
 @Injectable({
   providedIn: 'root',
@@ -12,17 +14,33 @@ export class AuthService {
   private readonly http = inject(HttpClient);
 
   register(request: IRegisterRequest): Observable<string> {
-    const customHeader = new HttpHeaders({
-      'X-MS-TYPE': 'auth',
-    });
+    const customHeader = this.getCustomHeaders();
 
     return this.http
       .post<string>(`${environment.BASE_URL}/signup`, request, {
         headers: customHeader,
       })
       .pipe(catchError((err: IErrorResponse) => {
-        console.log('err :>> ', err);
-        return throwError(() => err);
+        // console.log('err :>> ', err);
+        return throwError(() => err.error);
       }));
+  }
+
+  login(request: ILoginRequest): Observable<ILoginResponse> {
+    return this.http.
+      post<ILoginResponse>(`${environment.BASE_URL}/login`, request, {
+        headers: this.getCustomHeaders(),
+      })
+      .pipe(catchError((err: IErrorResponse) => {
+        // console.log('err :>> ', err);
+        return throwError(() => err.error);
+      }));
+  }
+
+  private getCustomHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      'X-MS-TYPE': 'auth',
+      'Access-Control-Allow-Origin': 'http://localhost:4200',
+    });
   }
 }

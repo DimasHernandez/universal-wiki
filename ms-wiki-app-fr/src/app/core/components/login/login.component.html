@@ -1,1 +1,33 @@
-<p>login works!</p>
+<div class="mx-auto w-80 md:w-sm my-30 container">
+    <mat-card class="flex items-center" appearance="raised">
+        <mat-card-header>
+            <mat-card-title>Login</mat-card-title>
+        </mat-card-header>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col justify-center items-center mt-5">
+            <mat-form-field class="w-60" appearance="fill">
+                <mat-label>Username</mat-label>
+                <input id="username" matInput placeholder="Placeholder" formControlName="username" />
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Enter Password</mat-label>
+                <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password" />
+                <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide()">
+                    <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <div>
+                <p>
+                    <a mat-button routerLink="/auth/register" target="_self">You don't have account?</a>
+                </p>
+            </div>
+
+            <mat-card-actions>
+                <button type="submit" mat-flat-button>Sign in</button>
+            </mat-card-actions>
+        </form>
+    </mat-card>
+</div>

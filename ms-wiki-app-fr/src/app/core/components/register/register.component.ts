@@ -4,6 +4,7 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { IRegisterForm } from '@core/interfaces';
 import { IRegisterRequest } from '@core/interfaces/requests/register.request';
 import { AuthService } from '@core/services/auth.service';
@@ -18,7 +19,8 @@ export class RegisterComponent {
   hide = signal(true);
 
   private readonly authService = inject(AuthService);
-  fb = inject(FormBuilder);
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
 
   registerForm = this.fb.group<IRegisterForm>({
     username: new FormControl('', {
@@ -30,31 +32,26 @@ export class RegisterComponent {
     passwordConfirm: new FormControl('', {
       validators: [Validators.required, Validators.minLength(5)],
     }),
-    roles: new FormControl(null, {
+    role: new FormControl(null, {
       validators: [Validators.required],
     }),
     isActivate: new FormControl(true, {
-      validators: [Validators.requiredTrue]
+      validators: [Validators.required]
     }),
   });
 
   onSubmit(): void {
     if (!this.registerForm.valid || !this.registerForm.value.isActivate) {
-      console.log('form invalid');
-
       this.formDirty();
       return;
     }
 
-    console.log('form valid: ', this.registerForm.valid);
-    console.log('form valid: ', this.registerForm.value);
-
-    const { username, password, roles, isActivate } = this.registerForm.value;
-    if (username && password && roles && isActivate) {
+    const { username, password, role, isActivate } = this.registerForm.value;
+    if (username && password && role && isActivate) {
       const request: IRegisterRequest = {
         username,
         password,
-        roles: [roles],
+        roles: [role],
         active: isActivate,
       };
       console.log('request :>> ', request);
@@ -62,16 +59,18 @@ export class RegisterComponent {
       this.authService.register(request).subscribe({
         next: (value) => {
           console.log('value :>> ', value);
+          return this.router.navigateByUrl('/auth/login');
         },
-        error: (err) => {
-          console.log('err :>> ', err);
-        },
-        complete: () => {
-          console.log('completed');
-        },
+        // error: (err) => {
+        //   console.log('err :>> ', err);
+        // },
+        // complete: () => {
+        //   console.log('completed');
+        // },
       });
       // ?? ||
     }
+    this.clearForm();
   }
 
   formDirty(): void {
@@ -98,5 +97,26 @@ export class RegisterComponent {
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
     event.stopPropagation();
+    event.preventDefault();
+  }
+
+  clearForm(): void {
+    this.registerForm.reset({
+      username: '',
+      password: '',
+      passwordConfirm: '',
+      role: null,
+      isActivate: true,
+    });
+
+    const controlsKey = Object.keys(this.registerForm.controls);
+    console.log('controlsKey: ', controlsKey);
+
+    for (const key of controlsKey) {
+      this.registerForm.get(key)?.setErrors(null);
+      this.registerForm.get(key)?.markAsPristine();
+      this.registerForm.get(key)?.markAsUntouched();
+      this.registerForm.get(key)?.updateValueAndValidity();
+    }
   }
 }
