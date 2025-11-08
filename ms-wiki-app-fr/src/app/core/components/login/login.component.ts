@@ -44,6 +44,8 @@ export class LoginComponent {
       this.authService.login(request).subscribe({
         next: (response: ILoginResponse) => {
           console.log('response :>> ', response);
+          localStorage.setItem('access_token', response.accessToken);
+          localStorage.setItem('refresh_token', response.refreshToken);
         },
         // error: (error) => {
         //   console.log('error :>> ', error);
