@@ -1,9 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IRegisterForm } from '@core/interfaces';
+
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DataMessage, IRegisterForm } from '@core/interfaces';
 import { IRegisterRequest } from '@core/interfaces/requests/register.request';
 import { AuthService } from '@core/services/auth.service';
+import { SnackMessageComponent } from '@shared/components/snack-message/snack-message.component';
 
 @Component({
   selector: 'app-register',
@@ -17,6 +20,7 @@ export class RegisterComponent {
   private readonly authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private readonly _snackBar = inject(MatSnackBar);
 
   registerForm = this.fb.group<IRegisterForm>({
     username: new FormControl('', {
@@ -53,12 +57,27 @@ export class RegisterComponent {
       console.log('request :>> ', request);
 
       this.authService.register(request).subscribe({
-        next: (value) => {
-          console.log('value :>> ', value);
+        next: () => {
+          const data: DataMessage = {
+            message: 'Register successfully',
+            typeMessage: 'success'
+          }
+          this._snackBar.openFromComponent(SnackMessageComponent, {
+            data
+          });
           this.router.navigateByUrl('/auth/login');
         },
         error: (err) => {
-          console.log('err :>> ', err);
+          const data: DataMessage = {
+            message: 'Something went wrong, try again',
+            typeMessage: 'error',
+          };
+          this._snackBar.openFromComponent(SnackMessageComponent, {
+            duration: 100000,
+            horizontalPosition: 'end',
+            verticalPosition: 'bottom',
+            data,
+          });
         },
         complete: () => {
           console.log('completed');
@@ -70,7 +89,6 @@ export class RegisterComponent {
   formDirty(): void {
     const controlsKey = Object.keys(this.registerForm.controls);
     for (const key of controlsKey) {
-      // this.registerForm.get(key)?.markAsDirty();
       this.registerForm.get(key)?.markAsTouched();
     }
   }
@@ -92,25 +110,5 @@ export class RegisterComponent {
     this.hide.set(!this.hide());
     event.stopPropagation();
     event.preventDefault();
-  }
-
-  clearForm(): void {
-    this.registerForm.reset({
-      username: '',
-      password: '',
-      passwordConfirm: '',
-      role: null,
-      isActivate: true,
-    });
-
-    const controlsKey = Object.keys(this.registerForm.controls);
-    console.log('controlsKey: ', controlsKey);
-
-    for (const key of controlsKey) {
-      this.registerForm.get(key)?.setErrors(null);
-      this.registerForm.get(key)?.markAsPristine();
-      this.registerForm.get(key)?.markAsUntouched();
-      this.registerForm.get(key)?.updateValueAndValidity();
-    }
   }
 }
