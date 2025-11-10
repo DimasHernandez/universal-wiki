@@ -18,13 +18,13 @@ import { SharedModule } from '@shared/shared.module';
     LoginComponent,
     RegisterComponent,
   ],
-  providers:[AuthService],
+  providers: [AuthService],
   imports: [
     CommonModule,
     CoreRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
     SharedModule
-  ]
+  ],
 })
 export class CoreModule { }

@@ -6,12 +6,15 @@ import { environment } from '@environments/environment';
 import { IErrorResponse } from '@core/interfaces/response/error.response';
 import { ILoginRequest } from '@core/interfaces/requests/login.request';
 import { ILoginResponse } from '@core/interfaces/response/login-response';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private readonly http = inject(HttpClient);
+
+  private route = inject(Router);
 
   register(request: IRegisterRequest): Observable<string> {
     const customHeader = this.getCustomHeaders();
@@ -42,5 +45,11 @@ export class AuthService {
       'X-MS-TYPE': 'auth',
       'Access-Control-Allow-Origin': 'http://localhost:4200',
     });
+  }
+
+  logout(): void {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    this.route.navigateByUrl('/auth/login');
   }
 }

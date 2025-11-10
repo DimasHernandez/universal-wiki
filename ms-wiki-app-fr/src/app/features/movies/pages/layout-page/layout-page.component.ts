@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MenuItem } from '@app/features/movies/interfaces';
+import { AuthService } from '@core/services/auth.service';
 
 @Component({
   selector: 'app-layout-page',
@@ -9,6 +10,8 @@ import { MenuItem } from '@app/features/movies/interfaces';
 })
 export class LayoutPageComponent {
 
+  private readonly authService = inject(AuthService);
+
   public sidebarMenuItems: MenuItem[] = [
     { label: 'Movies', icon: 'movie', url: '/movies/list' },
     { label: 'Series TV', icon: 'tv', url: '#' },
@@ -16,5 +19,9 @@ export class LayoutPageComponent {
     { label: 'Comics', icon: 'auto_stories', url: '#' },
     { label: 'Books', icon: 'book', url: '#' },
   ]
+
+  public logout(): void {
+    this.authService.logout();
+  }
 
 }

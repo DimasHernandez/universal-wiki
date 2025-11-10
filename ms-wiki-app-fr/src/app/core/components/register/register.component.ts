@@ -72,9 +72,6 @@ export class RegisterComponent {
             typeMessage: 'error',
           };
           this._snackBar.openFromComponent(SnackMessageComponent, {
-            duration: 100000,
-            horizontalPosition: 'end',
-            verticalPosition: 'bottom',
             data,
           });
         }

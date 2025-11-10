@@ -1,10 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormControl, Validators, } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ILoginForm } from '@core/interfaces';
+
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DataMessage, ILoginForm } from '@core/interfaces';
 import { ILoginRequest } from '@core/interfaces/requests/login.request';
 import { ILoginResponse } from '@core/interfaces/response/login-response';
 import { AuthService } from '@core/services/auth.service';
+import { SnackMessageComponent } from '@shared/components/snack-message/snack-message.component';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +21,7 @@ export class LoginComponent {
   private readonly authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private readonly _snackBar = inject(MatSnackBar);
 
   loginForm = this.fb.group<ILoginForm>({
     username: new FormControl('', { validators: [Validators.required, Validators.minLength(5)] }),
@@ -43,19 +47,34 @@ export class LoginComponent {
 
       this.authService.login(request).subscribe({
         next: (response: ILoginResponse) => {
-          console.log('response :>> ', response);
           localStorage.setItem('access_token', response.accessToken);
           localStorage.setItem('refresh_token', response.refreshToken);
+
+          const data: DataMessage = {
+            message: 'Login successfully!',
+            typeMessage: 'success'
+          }
+          this._snackBar.openFromComponent(SnackMessageComponent, {
+            data
+          });
+          console.log('redirect ... /movies/list');
+
+          this.router.navigateByUrl('/movies/list');
         },
-        // error: (error) => {
-        //   console.log('error :>> ', error);
-        // },
-        // complete: () => {
-        //   console.log('completed');
-        // }
+        error: (error) => {
+          const data: DataMessage = {
+            message: 'Login failed',
+            typeMessage: 'error'
+          };
+          this._snackBar.openFromComponent(SnackMessageComponent, {
+            data
+          });
+        },
+        complete: () => {
+          console.log('completed');
+        }
       });
     }
-    this.clearForm();
   }
 
   clickEvent(event: MouseEvent) {
@@ -63,22 +82,4 @@ export class LoginComponent {
     event.stopPropagation();
     event.preventDefault();
   }
-
-  clearForm(): void {
-    this.loginForm.reset({
-      username: '',
-      password: '',
-    });
-
-    const controlsKey = Object.keys(this.loginForm.controls);
-    console.log('controlsKey: ', controlsKey);
-
-    for (const key of controlsKey) {
-      this.loginForm.get(key)?.setErrors(null);
-      this.loginForm.get(key)?.markAsPristine();
-      this.loginForm.get(key)?.markAsUntouched();
-      this.loginForm.get(key)?.updateValueAndValidity();
-    }
-  }
-
 }
