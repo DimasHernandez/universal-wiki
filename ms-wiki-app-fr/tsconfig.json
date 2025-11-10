@@ -15,6 +15,9 @@
       "@app/*": [
         "src/app/*"
       ],
+      "@movies/*": [
+        "src/app/movies/*"
+      ],
       "@environments/*": [
         "src/environments/*"
       ],

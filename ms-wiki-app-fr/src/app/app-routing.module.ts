@@ -8,6 +8,10 @@ const routes: Routes = [
     loadChildren: () => import('./core/core.module').then((m) => m.CoreModule),
   },
   {
+    path: 'movies',
+    loadChildren: () => import('./movies/movies.module').then((m) => m.MoviesModule),
+  },
+  {
     path: '**',
     redirectTo: 'auth',
   },

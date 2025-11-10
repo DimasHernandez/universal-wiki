@@ -1,0 +1,12 @@
+.spacer {
+    flex: 1 1 auto;
+}
+
+.color-icon {
+    color: black;
+}
+
+.my-custom-toolbar {
+    background-color: var(--my-custom-toolbar-color, #79ACFF);
+    color: var(--my-custom-toolbar-text-color, black);
+}
