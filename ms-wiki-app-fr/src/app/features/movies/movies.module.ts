@@ -15,9 +15,6 @@ import { AuthService } from '@core/services/auth.service';
     CommonModule,
     MoviesRoutingModule,
     SharedModule,
-  ],
-  providers: [
-    AuthService
   ]
 })
 export class MoviesModule { }

@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@app/material/material.module';
 import { SnackMessageComponent } from './components/snack-message/snack-message.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from '@core/services/auth.service';
 
 @NgModule({
   declarations: [SnackMessageComponent],
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, HttpClientModule],
   exports: [MaterialModule, SnackMessageComponent],
   providers: [
     {
@@ -17,6 +19,7 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
         verticalPosition: 'bottom',
       },
     },
+    AuthService
   ],
 })
 export class SharedModule {}
