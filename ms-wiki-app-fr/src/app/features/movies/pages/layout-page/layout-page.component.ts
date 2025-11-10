@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MenuItem } from '@app/movies/interfaces';
+import { MenuItem } from '@app/features/movies/interfaces';
 
 @Component({
   selector: 'app-layout-page',

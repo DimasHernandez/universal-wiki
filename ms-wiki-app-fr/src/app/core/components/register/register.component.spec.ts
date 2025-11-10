@@ -5,11 +5,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Roles } from '@core/interfaces/enums';
 import { IRegisterRequest } from '@core/interfaces/requests/register.request';
 import { AuthService } from '@core/services/auth.service';
+import { SharedModule } from '@shared/shared.module';
 import { of, throwError } from 'rxjs';
 import { RegisterComponent } from './register.component';
-import { MaterialModule } from '@app/material/material.module';
 
-fdescribe('RegisterComponent', () => {
+describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
   let authServiceMock: AuthService;
@@ -17,7 +17,7 @@ fdescribe('RegisterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RegisterComponent],
-      imports: [ReactiveFormsModule, HttpClientModule, MaterialModule],
+      imports: [ReactiveFormsModule, HttpClientModule, SharedModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegisterComponent);
@@ -47,7 +47,7 @@ fdescribe('RegisterComponent', () => {
         username: 'pepe mal',
         password: 'pass3',
         passwordConfirm: 'pass3',
-        roles: Roles.ROLE_USER,
+        role: Roles.ROLE_USER,
         isActivate: true,
       });
       component.registerForm.controls.passwordConfirm.markAsDirty();
@@ -62,7 +62,7 @@ fdescribe('RegisterComponent', () => {
         username: 'pepe mal',
         password: 'pass3',
         passwordConfirm: 'pass233',
-        roles: Roles.ROLE_USER,
+        role: Roles.ROLE_USER,
         isActivate: true,
       });
       component.registerForm.controls.passwordConfirm.markAsDirty();
@@ -86,7 +86,7 @@ fdescribe('RegisterComponent', () => {
         username: 'pepe mal',
         password: 'pass3',
         passwordConfirm: 'pass3',
-        roles: Roles.ROLE_USER,
+        role: Roles.ROLE_USER,
         isActivate: true,
       });
       const registerSpy = spyOn(authServiceMock, 'register').and.returnValue(
@@ -106,7 +106,7 @@ fdescribe('RegisterComponent', () => {
         username: 'asd',
         password: 'aaa',
         passwordConfirm: 'asa',
-        roles: Roles.ROLE_USER,
+        role: Roles.ROLE_USER,
         isActivate: true,
       });
 
@@ -128,7 +128,7 @@ fdescribe('RegisterComponent', () => {
         username: 'pepe mal',
         password: 'pass3',
         passwordConfirm: 'pass3',
-        roles: Roles.ROLE_USER,
+        role: Roles.ROLE_USER,
         isActivate: true,
       });
       const registerSpy = spyOn(authServiceMock, 'register').and.returnValue(

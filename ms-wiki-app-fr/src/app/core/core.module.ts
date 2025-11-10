@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+
+import { AuthService } from './services/auth.service';
 import { CoreRoutingModule } from './core-routing.module';
-import { SecurityPageComponent } from './pages/security-page/security-page.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from './services/auth.service';
-import { MaterialModule } from '@app/material/material.module';
+import { SecurityPageComponent } from './pages/security-page/security-page.component';
+import { SharedModule } from '@shared/shared.module';
 
 
 @NgModule({
@@ -23,7 +24,7 @@ import { MaterialModule } from '@app/material/material.module';
     CoreRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MaterialModule
+    SharedModule
   ]
 })
 export class CoreModule { }

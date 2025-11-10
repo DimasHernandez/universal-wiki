@@ -1,9 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IRegisterForm } from '@core/interfaces';
 import { IRegisterRequest } from '@core/interfaces/requests/register.request';
@@ -36,7 +32,7 @@ export class RegisterComponent {
       validators: [Validators.required],
     }),
     isActivate: new FormControl(true, {
-      validators: [Validators.required]
+      validators: [Validators.required],
     }),
   });
 
@@ -59,18 +55,16 @@ export class RegisterComponent {
       this.authService.register(request).subscribe({
         next: (value) => {
           console.log('value :>> ', value);
-          return this.router.navigateByUrl('/auth/login');
+          this.router.navigateByUrl('/auth/login');
         },
-        // error: (err) => {
-        //   console.log('err :>> ', err);
-        // },
-        // complete: () => {
-        //   console.log('completed');
-        // },
+        error: (err) => {
+          console.log('err :>> ', err);
+        },
+        complete: () => {
+          console.log('completed');
+        },
       });
-      // ?? ||
     }
-    this.clearForm();
   }
 
   formDirty(): void {

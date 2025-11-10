@@ -6,7 +6,7 @@ import { IRegisterRequest } from '@core/interfaces/requests/register.request';
 import { of, throwError } from 'rxjs';
 import { IErrorResponse } from '@core/interfaces/response/error.response';
 
-fdescribe('AuthService', () => {
+describe('AuthService', () => {
   let authService: AuthService;
   let http: HttpClient;
 
