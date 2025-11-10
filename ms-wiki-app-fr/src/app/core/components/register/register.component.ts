@@ -54,7 +54,6 @@ export class RegisterComponent {
         roles: [role],
         active: isActivate,
       };
-      console.log('request :>> ', request);
 
       this.authService.register(request).subscribe({
         next: () => {
@@ -67,7 +66,7 @@ export class RegisterComponent {
           });
           this.router.navigateByUrl('/auth/login');
         },
-        error: (err) => {
+        error: () => {
           const data: DataMessage = {
             message: 'Something went wrong, try again',
             typeMessage: 'error',
@@ -78,10 +77,7 @@ export class RegisterComponent {
             verticalPosition: 'bottom',
             data,
           });
-        },
-        complete: () => {
-          console.log('completed');
-        },
+        }
       });
     }
   }
