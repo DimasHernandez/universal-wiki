@@ -7,6 +7,7 @@ import { IErrorResponse } from '@core/interfaces/response/error.response';
 import { ILoginRequest } from '@core/interfaces/requests/login.request';
 import { ILoginResponse } from '@core/interfaces/response/login-response';
 import { Router } from '@angular/router';
+import { CustomHeader } from '@core/interfaces/enums';
 
 @Injectable({
   providedIn: 'root',
@@ -41,10 +42,9 @@ export class AuthService {
   }
 
   private getCustomHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      'X-MS-TYPE': 'auth',
-      'Access-Control-Allow-Origin': 'http://localhost:4200',
-    });
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.set(CustomHeader.X_MS_TYPE, environment.X_MS_TYPE_AUTH_HEADER_VALUE);
+    return headers;
   }
 
   logout(): void {

@@ -1,0 +1,24 @@
+<mat-card class="flex flex-col justify-center items-center" appearance="outlined">
+    <mat-card-header>
+        <mat-card-title-group>
+            <mat-card-title>{{ movie.title }}</mat-card-title>
+            <mat-card-subtitle>{{ movie.originalTitle }}</mat-card-subtitle>
+        </mat-card-title-group>
+    </mat-card-header>
+    <img class="h-96 w-56 object-contain rounded-md" [src]=[movie.urlImage]>
+
+    <mat-card-content>
+        <p>{{ movie.summary }}</p>
+
+        <br>
+        <mat-chip>{{ movie.type }}</mat-chip>
+        <div class="flex flex-wrap gap-1 mb-1 mt-1">
+            <mat-chip-listbox *ngFor="let genre of movie.genres">
+                <mat-chip>{{ genre }}</mat-chip>
+            </mat-chip-listbox>
+        </div>
+
+        <mat-chip>{{ movie.releaseDate }}</mat-chip>
+
+    </mat-card-content>
+</mat-card>

@@ -57,8 +57,6 @@ export class LoginComponent {
           this._snackBar.openFromComponent(SnackMessageComponent, {
             data
           });
-          console.log('redirect ... /movies/list');
-
           this.router.navigateByUrl('/movies/list');
         },
         error: (error) => {

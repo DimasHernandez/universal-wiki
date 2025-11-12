@@ -5,11 +5,12 @@ import { SnackMessageComponent } from './components/snack-message/snack-message.
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '@core/services/auth.service';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
-  declarations: [SnackMessageComponent],
+  declarations: [SnackMessageComponent, PaginationComponent],
   imports: [CommonModule, MaterialModule, HttpClientModule],
-  exports: [MaterialModule, SnackMessageComponent],
+  exports: [MaterialModule, SnackMessageComponent, PaginationComponent],
   providers: [
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
@@ -22,4 +23,4 @@ import { AuthService } from '@core/services/auth.service';
     AuthService
   ],
 })
-export class SharedModule {}
+export class SharedModule { }

@@ -32,7 +32,15 @@ spring:
               - "Path=/api/v1/movies"
               - "Method=OPTIONS,GET"
             filters:
-              - "StripPrefix=1"
+              - StripPrefix=1
+              - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+            metadata:
+              cors:
+                allowedOrigins: '*'
+                allowedMethods:
+                  - GET
+                  - OPTIONS
+                allowedHeaders: '${ALLOW_ORIGINS:*}'
 logging:
   devtools:
     add-properties: false
