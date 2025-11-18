@@ -1,5 +1,5 @@
 <div class="flex justify-center">
-    <mat-paginator [length]="infoMovie.totalPages" [pageSize]="infoMovie.page" [pageSizeOptions]="[1, 5, 10, 20]"
-        aria-label="Select page">
+    <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="[1, 5, 10, 20]"
+        (page)="onPageChange($event)" aria-label="Select page">
     </mat-paginator>
 </div>

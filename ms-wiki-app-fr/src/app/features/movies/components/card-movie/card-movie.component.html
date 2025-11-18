@@ -1,24 +1,32 @@
-<mat-card class="flex flex-col justify-center items-center" appearance="outlined">
-    <mat-card-header>
-        <mat-card-title-group>
-            <mat-card-title>{{ movie.title }}</mat-card-title>
-            <mat-card-subtitle>{{ movie.originalTitle }}</mat-card-subtitle>
+<mat-card class="flex flex-col justify-between items-center h-full" appearance="outlined">
+    <mat-card-header class="w-full pb-2">
+        <mat-card-title-group class="flex flex-col items-start w-full">
+            <mat-card-title class="text-xl font-black mb-1">{{ movie.title }}</mat-card-title>
+            <mat-card-subtitle class="text-sm text-gray-500 italic">{{ movie.originalTitle }}</mat-card-subtitle>
         </mat-card-title-group>
     </mat-card-header>
-    <img class="h-96 w-56 object-contain rounded-md" [src]=[movie.urlImage]>
 
-    <mat-card-content>
-        <p>{{ movie.summary }}</p>
+    <div class="flex justify-center mb-2 p-3">
+        <img class="h-96 w-64 object-top rounded-2xl" [src]=[movie.urlImage] alt="Movie poster: {{ movie.title }}">
+    </div>
+
+    <mat-card-content class="flex flex-col grow w-full px-4 pt-2">
+        <p class="text-sm text-gray-900 line-clamp-3 overflow-hidden mb-2 cursor-pointer" 
+        matTooltip="{{ movie.summary }}"  matTooltipPosition="above" matTooltipClass="movie-summary-tooltip"
+        >{{ movie.summary }}</p>
 
         <br>
-        <mat-chip>{{ movie.type }}</mat-chip>
-        <div class="flex flex-wrap gap-1 mb-1 mt-1">
-            <mat-chip-listbox *ngFor="let genre of movie.genres">
-                <mat-chip>{{ genre }}</mat-chip>
-            </mat-chip-listbox>
+
+        <div class="flex flex-wrap gap-1 mb-3">
+            <mat-chip color="accent" selected>{{ movie.type | uppercase}}</mat-chip>
+            <mat-chip>{{ movie.releaseDate }}</mat-chip>
         </div>
 
-        <mat-chip>{{ movie.releaseDate }}</mat-chip>
+        <div class="flex flex-wrap gap-1 mb-2 mt-auto">
+            <mat-chip-listbox *ngFor="let genre of movie.genres">
+                <mat-chip class="bg-gray-700 text-gray-300">{{ genre }}</mat-chip>
+            </mat-chip-listbox>
+        </div>
 
     </mat-card-content>
 </mat-card>

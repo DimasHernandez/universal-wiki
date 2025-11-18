@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { IInfoMovie } from '@app/features/movies/response/info-movie';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-pagination',
@@ -7,22 +7,19 @@ import { IInfoMovie } from '@app/features/movies/response/info-movie';
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.css'
 })
-export class PaginationComponent implements OnChanges {
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('info movie from component son: ', this.infoMovie);
-    // throw new Error('Method not implemented.');
-  }
+export class PaginationComponent {
 
   @Input()
-  public infoMovie: IInfoMovie = {
-    page: 0,
-    movies: [],
-    total: 0,
-    totalMovies: 0,
-    totalPages: 0
-  };
+  length: number = 1;
 
+  @Input()
+  pageSize: number = 5;
 
+  @Output()
+  triggerPage = new EventEmitter<PageEvent>();
 
+  onPageChange(event: PageEvent): void {
+    this.triggerPage.emit(event);
+  }
 
 }

@@ -18,9 +18,12 @@ export class MovieService {
       .get<IInfoMovie>(`${environment.BASE_URL_MOVIES}/movies?page=${page}&pageSize=${pageSize}`,
         {
           headers: this.getCustomHeader()
-        }).pipe(catchError((err: IErrorResponse) => {
+        })
+      .pipe(
+        catchError((err: IErrorResponse) => {
           return throwError(() => err.error)
-        }));
+        })
+      );
   }
 
   private getCustomHeader(): HttpHeaders {
