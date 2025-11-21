@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { IInfoMovie } from '../response/info-movie';
 import { CustomHeader } from '@core/interfaces/enums';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { IErrorResponse } from '@core/interfaces/response/error.response';
 
 @Injectable({
@@ -20,6 +20,8 @@ export class MovieService {
           headers: this.getCustomHeader()
         })
       .pipe(
+        tap(response => console.log('movies: ', response.movies)
+        ),
         catchError((err: IErrorResponse) => {
           return throwError(() => err.error)
         })
