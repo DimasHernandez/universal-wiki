@@ -9,6 +9,7 @@ import { debounceTime, delay, filter, tap } from 'rxjs';
 import { MyDialogComponentComponent } from '@shared/components/my-dialog-component/my-dialog-component.component';
 import { MatDialog } from '@angular/material/dialog';
 import { IMovie } from '../../response/movie';
+import { SpinnerService } from '@shared/services/spinner.service';
 
 @Component({
   selector: 'app-list-page',
@@ -20,6 +21,7 @@ export class ListPageComponent implements OnInit {
   private readonly movieService = inject(MovieService);
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog);
+  private spinnerService = inject(SpinnerService);
 
   infoMovie: IInfoMovie = {
     page: 0,
@@ -69,6 +71,7 @@ export class ListPageComponent implements OnInit {
       console.log(`Extract InfoMovie from cache! - Key ${key} - Map size: ${this.moviesCache.size}`,);
       return;
     }
+    this.spinnerService.setLoading(true);
 
     this.movieService.getMovies(page, pageSize)
       .subscribe({
@@ -76,9 +79,11 @@ export class ListPageComponent implements OnInit {
           console.log('Calling API Movie!');
           this.infoMovie = response;
           this.moviesCache.set(key, response);
+          this.spinnerService.setLoading(false);
         },
         error: (error: IErrorResponse) => {
           console.log('error: ', error.error);
+          this.spinnerService.setLoading(false);
         }
       });
   }

@@ -28,7 +28,11 @@
         </button>
     </mat-toolbar>
 
-    <div class="container mx-auto mb-2 mt-2">
+    <div class="flex justify-center items-center h-screen opacity-60 bg-black" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div *ngIf="!loading" class="container mx-auto mb-2 mt-2">
         <router-outlet />
     </div>
 
