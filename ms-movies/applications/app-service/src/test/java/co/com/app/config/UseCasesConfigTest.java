@@ -37,7 +37,7 @@ public class UseCasesConfigTest {
 
         private final MovieRepository movieRepository = new MovieRepository() {
             @Override
-            public Mono<InfoMovie> getMovies(double page, double pageSize) {
+            public Mono<InfoMovie> getMovies(double page, double pageSize, String query) {
                 return Mono.empty();
             }
         };

@@ -11,6 +11,10 @@ public class MovieUseCase {
     private final MovieRepository movieRepository;
 
     public Mono<InfoMovie> getMovies(int page, int pageSize) {
-        return movieRepository.getMovies(page, pageSize);
+        return movieRepository.getMovies(page, pageSize, null);
+    }
+
+    public Mono<InfoMovie> getMoviesByName(int page, int pageSize, String query) {
+        return movieRepository.getMovies(page, pageSize, query);
     }
 }
