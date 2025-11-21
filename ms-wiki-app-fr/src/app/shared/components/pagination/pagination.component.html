@@ -1,5 +1,5 @@
-<div class="flex justify-center">
-    <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="[1, 5, 10, 20]"
+<div class="flex flex-col items-center justify-center w-3/4 sm:w-full">
+    <mat-paginator [length]="length"  [pageSize]="pageSize" [pageSizeOptions]="[1, 5, 10, 20]"
         (page)="onPageChange($event)" aria-label="Select page">
     </mat-paginator>
 </div>

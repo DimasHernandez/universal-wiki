@@ -6,6 +6,7 @@ import { LayoutPageComponent } from './pages/layout-page/layout-page.component';
 import { ListPageComponent } from './pages/list-page/list-page.component';
 import { MovieService } from './services/movie.service';
 import { CardMovieComponent } from './components/card-movie/card-movie.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { CardMovieComponent } from './components/card-movie/card-movie.component
     CommonModule,
     MoviesRoutingModule,
     SharedModule,
+    ReactiveFormsModule
   ],
   providers: [
     MovieService

@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { IInfoMovie } from '../response/info-movie';
 import { CustomHeader } from '@core/interfaces/enums';
-import { catchError, throwError } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { IErrorResponse } from '@core/interfaces/response/error.response';
 
 @Injectable({
@@ -13,9 +13,22 @@ export class MovieService {
 
   private readonly http = inject(HttpClient);
 
-  public getMovies(page: number, pageSize: number) {
+  public getMovies(page: number, pageSize: number): Observable<IInfoMovie> {
     return this.http
       .get<IInfoMovie>(`${environment.BASE_URL_MOVIES}/movies?page=${page}&pageSize=${pageSize}`,
+        {
+          headers: this.getCustomHeader()
+        })
+      .pipe(
+        catchError((err: IErrorResponse) => {
+          return throwError(() => err.error)
+        })
+      );
+  }
+
+  public getMoviesSearch(page: number, pageSize: number, query: string): Observable<IInfoMovie> {
+    return this.http
+      .get<IInfoMovie>(`${environment.BASE_URL_MOVIES}/movies/search?page=${page}&pageSize=${pageSize}&query=${query}`,
         {
           headers: this.getCustomHeader()
         })

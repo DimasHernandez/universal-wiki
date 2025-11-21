@@ -6,9 +6,10 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '@core/services/auth.service';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { MyDialogComponentComponent } from './components/my-dialog-component/my-dialog-component.component';
 
 @NgModule({
-  declarations: [SnackMessageComponent, PaginationComponent],
+  declarations: [SnackMessageComponent, PaginationComponent, MyDialogComponentComponent],
   imports: [CommonModule, MaterialModule, HttpClientModule],
   exports: [MaterialModule, SnackMessageComponent, PaginationComponent],
   providers: [
