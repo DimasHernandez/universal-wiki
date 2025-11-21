@@ -29,7 +29,7 @@ spring:
           - id: "movies-microservice"
             uri: "http://localhost:8080"
             predicates:
-              - "Path=/api/v1/movies"
+              - "Path=/api/v1/movies/**"
               - "Method=OPTIONS,GET"
             filters:
               - StripPrefix=1
