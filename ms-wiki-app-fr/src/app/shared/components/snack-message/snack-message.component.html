@@ -1,0 +1,13 @@
+<div class="flex"
+  [ngClass]="{'text-green-400': data.typeMessage == 'success', 'text-red-500': data.typeMessage == 'error','text-orange-400': data.typeMessage == 'warning' }">
+  <span matSnackBarLabel>
+    {{ data.message }}
+  </span>
+  <span matSnackBarActions>
+    <button mat-button matSnackBarAction (click)="snackBarRef.dismissWithAction()">
+      <mat-icon *ngIf="data.typeMessage == 'success'">task_alt</mat-icon>
+      <mat-icon *ngIf="data.typeMessage == 'warning'">warning</mat-icon>
+      <mat-icon *ngIf="data.typeMessage == 'error'">report</mat-icon>
+    </button>
+  </span>
+</div>

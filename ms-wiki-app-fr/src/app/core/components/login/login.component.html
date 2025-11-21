@@ -1,0 +1,35 @@
+<div class="mx-auto w-90 md:w-sm my-60 container">
+    <mat-card class="flex items-center" appearance="outlined">
+        <mat-card-header>
+            <h2 class="text-2xl font-bold text-center text-gray-800">Login</h2>
+        </mat-card-header>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col justify-center items-center mt-5">
+            <mat-form-field class="w-70" appearance="fill">
+                <mat-label>Username or email</mat-label>
+                <input id="username" matInput placeholder="" formControlName="username" />
+            </mat-form-field>
+
+            <mat-form-field class="w-70" appearance="fill">
+                <mat-label>Enter Password</mat-label>
+                <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password" />
+                <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide()">
+                    <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <div>
+                <a mat-button routerLink="/auth/register" target="_self">You don't have account?
+                    <!-- <mat-icon class="ml-1">favorite</mat-icon> -->
+                </a>
+            </div>
+
+            <mat-card-actions>
+                <button mat-flat-button color="primary" class="w-40 mb-4">
+                    <mat-icon class="mr-2">login</mat-icon>
+                    Login</button>
+            </mat-card-actions>
+        </form>
+    </mat-card>
+</div>

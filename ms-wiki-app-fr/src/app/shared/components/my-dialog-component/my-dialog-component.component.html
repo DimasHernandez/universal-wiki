@@ -1,0 +1,71 @@
+<div class="bg-white w-full flex flex-col items-center justify-center rounded-2xl h-full">
+    <!-- <h2 mat-dialog-title>movies length: <p>{{ data.length | json}}</p>
+    </h2> -->
+    <!-- <h2 mat-dialog-title>movies: <p>{{ data | json}}</p> -->
+    <!-- </h2> -->
+    <!-- <h2 mat-dialog-title>Titulo</h2> -->
+
+    <mat-dialog-content>
+        <table class="w-full text-sm text-left rtl:text-right text-body">
+            <tbody>
+                <tr class="bg-neutral-primary-soft border-b border-default hover:bg-neutral-secondary-medium"
+                    *ngFor="let movie of data">
+                    <td class="p-4">
+                        <img [src]="movie.urlImage" class="w-24 md:w-30 max-w-full max-h-full"
+                            [alt]="movie.originalTitle">
+                    </td>
+                    <td class="px-6 py-4 font-semibold text-heading">
+                        {{ movie.title }}
+                    </td>
+                    <td>
+                        <mat-chip>
+                            {{ movie.type }}
+                        </mat-chip>
+                    </td>
+                    <td class="px-6 py-4">
+
+                        <!-- <div class="max-w-xs mx-auto">
+                            <label for="counter-input-1" class="sr-only">Choose quantity:</label>
+                            <div class="relative flex items-center">
+                                <button type="button" id="decrement-button-1"
+                                    data-input-counter-decrement="counter-input-1"
+                                    class="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary rounded-full text-sm focus:outline-none h-6 w-6">
+                                    <svg class="w-3 h-3 text-heading" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M5 12h14" />
+                                    </svg>
+                                </button>
+
+                                <input type="text" id="counter-input-1" data-input-counter
+                                    class="shrink-0 text-heading border-0 bg-transparent text-sm font-normal focus:outline-none focus:ring-0 max-w-10 text-center"
+                                    placeholder="" value="16" required />
+
+                                <button type="button" id="increment-button-1"
+                                    data-input-counter-increment="counter-input-1"
+                                    class="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary rounded-full text-sm focus:outline-none h-6 w-6">
+                                    <svg class="w-3 h-3 text-heading" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M5 12h14m-7 7V5" />
+                                    </svg>
+                                </button>
+
+                            </div>
+                        </div> -->
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+        </table>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Close</button>
+    </mat-dialog-actions>
+
+</div>

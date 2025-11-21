@@ -15,6 +15,8 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface MovieMapper {
 
+    String IMAGE_URL = "https://image.tmdb.org/t/p/w342";
+
     @Mapping(target = "movies", source = "results", qualifiedByName = "toMovies")
     @Mapping(target = "totalMovies", source = "totalResults")
     InfoMovie toEntity(InfoMovieResponse response);
@@ -29,7 +31,7 @@ public interface MovieMapper {
                             .title(result.getTitle())
                             .originalTitle(result.getOriginalTitle())
                             .overview(result.getOverview())
-                            .posterPath("https://image.tmdb.org/t/p/w342".concat(result.getPosterPath()))
+                            .posterPath(IMAGE_URL + result.getPosterPath())
                             .mediaType(MediaTypeMovie.getByTypeFromString(result.getMediaType()))
                             .genres(movieGenres)
                             .releaseDate(result.getReleaseDate())

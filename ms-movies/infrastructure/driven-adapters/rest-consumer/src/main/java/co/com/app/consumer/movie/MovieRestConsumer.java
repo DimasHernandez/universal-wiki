@@ -28,6 +28,7 @@ public class MovieRestConsumer implements MovieRepository {
     public static final int PAGE_SIZE_API_EX = 20;
     public static final String QUERY_PARAM_API_KEY = "api_key";
     public static final String QUERY_PARAM_PAGE = "page";
+    public static final String QUERY_PARAM = "query";
 
     private final WebClient client;
     private final String apiKey;
@@ -57,15 +58,19 @@ public class MovieRestConsumer implements MovieRepository {
 
     @CircuitBreaker(name = "testGet", fallbackMethod = "moviesFallback")
     @Override
-    public Mono<InfoMovie> getMovies(double page, double pageSize) {
+    public Mono<InfoMovie> getMovies(double page, double pageSize, String query) {
+        String uri = query == null ? "/trending/movie/week" : "/search/movie";
 
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         queryParams.add(QUERY_PARAM_API_KEY, apiKey);
+        if (query != null) {
+            queryParams.add(QUERY_PARAM, query);
+        }
 
         int pageApi = calculationPage(page, pageSize, queryParams);
         return client
                 .get()
-                .uri(uriBuilder -> uriBuilder.path("/trending/movie/week")
+                .uri(uriBuilder -> uriBuilder.path(uri)
                         .queryParams(queryParams).build())
                 .retrieve()
                 .onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals,
@@ -86,8 +91,8 @@ public class MovieRestConsumer implements MovieRepository {
     }
 
     // Resilience
-    public Mono<InfoMovie> moviesFallback(double code, double value, Exception ex) {
-        log.warn("Executing fallback for movie service. Code {}, Value {}", code, value);
+    public Mono<InfoMovie> moviesFallback(double code, double value, String querySearch, Exception ex) {
+        log.warn("Executing fallback for movie service. Code {}, Value {}, QuerySearch {}", code, value, querySearch);
         log.error("Movie service fallback triggered due exception {}", ex.getMessage());
         return Mono.just(InfoMovie.builder()
                 .page(0)

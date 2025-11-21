@@ -13,18 +13,34 @@ spring:
           - id: "auth-microservice"
             uri: "http://localhost:8081"
             predicates:
-            - "Path=/auth/api/v1/signup,/auth/api/v1/login"
+            - "Path=/auth/api/v1/**"
             - "Method=OPTIONS,POST"
             filters:
-            - "StripPrefix=2"
+            - StripPrefix=2
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+            metadata:
+              cors:
+                allowedOrigins: '*'
+                allowedMethods:
+                  - POST
+                  - OPTIONS
+                allowedHeaders: '${ALLOW_ORIGINS:*}'
 
           - id: "movies-microservice"
             uri: "http://localhost:8080"
             predicates:
-              - "Path=/api/v1/movies"
+              - "Path=/api/v1/movies/**"
               - "Method=OPTIONS,GET"
             filters:
-              - "StripPrefix=1"
+              - StripPrefix=1
+              - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+            metadata:
+              cors:
+                allowedOrigins: '*'
+                allowedMethods:
+                  - GET
+                  - OPTIONS
+                allowedHeaders: '${ALLOW_ORIGINS:*}'
 logging:
   devtools:
     add-properties: false

@@ -26,4 +26,15 @@ public class MovieHandler {
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(mapperMovie.toDto(infoMovie)));
     }
+
+    public Mono<ServerResponse> getMoviesByName(ServerRequest request) {
+        int page = request.queryParam("page").map(Integer::parseInt).orElse(1);
+        int pageSize = request.queryParam("pageSize").map(Integer::parseInt).orElse(20);
+        String query = request.queryParam("query").map(String::trim).orElse("ramxbo");
+
+        return movieUseCase.getMoviesByName(page, pageSize, query)
+                .flatMap(infoMovie -> ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(mapperMovie.toDto(infoMovie)));
+    }
 }

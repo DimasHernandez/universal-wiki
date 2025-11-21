@@ -78,7 +78,7 @@ class MovieRestConsumerTest {
                 .setResponseCode(HttpStatus.OK.value())
                 .setBody(body));
 
-        var response = movieRestConsumer.getMovies(page, pageSize);
+        var response = movieRestConsumer.getMovies(page, pageSize, null);
 
         // Assert
         StepVerifier.create(response)
@@ -104,7 +104,7 @@ class MovieRestConsumerTest {
                 .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
                 .setResponseCode(HttpStatus.OK.value())
                 .setBody(body));
-        var response = movieRestConsumer.getMovies(page, pageSize)
+        var response = movieRestConsumer.getMovies(page, pageSize, null)
                 .doOnNext(infoResponse -> System.out.println("Info Movie Response: " + infoResponse));
 
         // Assert
@@ -131,7 +131,7 @@ class MovieRestConsumerTest {
                 .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
                 .setResponseCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .setBody(body));
-        var response = movieRestConsumer.getMovies(page, pageSize);
+        var response = movieRestConsumer.getMovies(page, pageSize, null);
 
         // Assert
         StepVerifier.create(response)

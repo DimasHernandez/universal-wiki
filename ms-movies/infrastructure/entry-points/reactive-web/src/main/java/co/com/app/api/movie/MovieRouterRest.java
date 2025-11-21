@@ -13,6 +13,7 @@ public class MovieRouterRest {
 
     @Bean
     public RouterFunction<ServerResponse> movierouterFunction(MovieHandler movieHandler) {
-        return route(GET("/api/v1/movies"), movieHandler::getMovies);
+        return route(GET("/api/v1/movies"), movieHandler::getMovies)
+                .andRoute(GET("/api/v1/movies/search"), movieHandler::getMoviesByName);
     }
 }
